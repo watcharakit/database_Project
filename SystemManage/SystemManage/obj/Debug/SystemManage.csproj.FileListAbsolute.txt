@@ -1,5 +1,5 @@
 D:\databaseProject\database_Project\SystemManage\SystemManage\bin\SystemManage.dll
 D:\databaseProject\database_Project\SystemManage\SystemManage\bin\SystemManage.pdb
-D:\databaseProject\database_Project\SystemManage\SystemManage\obj\Debug\SystemManage.csprojResolveAssemblyReference.cache
 D:\databaseProject\database_Project\SystemManage\SystemManage\obj\Debug\SystemManage.dll
 D:\databaseProject\database_Project\SystemManage\SystemManage\obj\Debug\SystemManage.pdb
+D:\databaseProject\database_Project\SystemManage\SystemManage\obj\Debug\SystemManage.csprojResolveAssemblyReference.cache

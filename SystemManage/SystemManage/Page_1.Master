@@ -1,0 +1,38 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Page_1.master.cs" Inherits="SystemManage.Page_1" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body style="height: 258px">
+    <form id="form1" runat="server">
+        <div style="height: 141px;">
+            <div style="width:100%;text-align:right">
+                
+                <asp:Panel ID="longin_PN" runat="server">
+                    <div style="width:60%;float:left;height:30px;text-align:left">
+
+                        <asp:HyperLink ID="HyperLink1" runat="server">Home</asp:HyperLink>
+
+                    </div>
+                    <div style="width:39%;float:right">
+                        <asp:Label ID="nameUser" runat="server" Text="name"></asp:Label>
+                        <asp:ImageButton ID="ImageButton1" runat="server" Height="30px" ImageUrl="/img/profile.jpg" Width="25px" />
+                        <asp:ImageButton ID="ImageButton2" runat="server" Height="30px" ImageUrl="/img/logout.jpg" Width="25px" />
+                    </div>
+                </asp:Panel>
+                
+            </div>
+            <div style="width:100%">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+            
+        </div>
+    </form>
+</body>
+</html>

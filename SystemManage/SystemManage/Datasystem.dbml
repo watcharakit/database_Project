@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SystemManage" Class="DatasystemDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=gun;Initial Catalog=SystemManage;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SystemManageConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Manage" Member="Manages">
+    <Type Name="Manage">
+      <Column Name="ID_Mange" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID_Project" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Subrasks_Project" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ID_User" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Project_Manage" Member="Project" ThisKey="ID_Project,Subrasks_Project" OtherKey="ID_Project,Subrasks_Project" Type="Project" IsForeignKey="true" />
+      <Association Name="User_name_Manage" Member="User_name" ThisKey="ID_User" OtherKey="ID_User" Type="User_name" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Processes" Member="Processes">
+    <Type Name="Process">
+      <Column Name="Name_Processes" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Dead_Line" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Progress" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Last_Edit" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="Process_Project" Member="Projects" ThisKey="Name_Processes" OtherKey="Name_Processes" Type="Project" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Project" Member="Projects">
+    <Type Name="Project">
+      <Column Name="ID_Project" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name_Project" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Subrasks_Project" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Dead_Line" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Comment_Bymanager" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Issue" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Name_Processes" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Project_Manage" Member="Manages" ThisKey="ID_Project,Subrasks_Project" OtherKey="ID_Project,Subrasks_Project" Type="Manage" />
+      <Association Name="Process_Project" Member="Process" ThisKey="Name_Processes" OtherKey="Name_Processes" Type="Process" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Skills" Member="Skills">
+    <Type Name="Skill">
+      <Column Name="ID_User" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name_Skills" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Experience" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="User_name_Skill" Member="User_name" ThisKey="ID_User" OtherKey="ID_User" Type="User_name" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.User_name" Member="User_names">
+    <Type Name="User_name">
+      <Column Name="ID_User" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Pass" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Position" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Sex" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="birthday" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="email" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="User_name_Manage" Member="Manages" ThisKey="ID_User" OtherKey="ID_User" Type="Manage" />
+      <Association Name="User_name_Skill" Member="Skill" ThisKey="ID_User" OtherKey="ID_User" Type="Skill" Cardinality="One" />
+    </Type>
+  </Table>
+</Database>
