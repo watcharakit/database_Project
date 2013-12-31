@@ -35,11 +35,7 @@
             &nbsp;&nbsp;&nbsp;
             <asp:TextBox ID="lastname" runat="server"></asp:TextBox>
             <br />
-            <asp:Label ID="Label5" runat="server" ForeColor="White" Text="Position              "></asp:Label>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:TextBox ID="position" runat="server"></asp:TextBox>
-            <br />
-            <asp:Label ID="Label9" runat="server" Text="Sex             " ForeColor="White"></asp:Label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="Label9" runat="server" Text="Sex             " ForeColor="White"></asp:Label>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:DropDownList ID="sex_drop" runat="server" Height="18px" Width="95px">
                 <asp:ListItem>Male</asp:ListItem>
                 <asp:ListItem>Female</asp:ListItem>
@@ -51,14 +47,15 @@
             <asp:TextBox ID="month" runat="server" Width="25px"></asp:TextBox>
             <asp:Label ID="Label12" runat="server" ForeColor="White" Text="-"></asp:Label>
             <asp:TextBox ID="year" runat="server" Width="40px"></asp:TextBox>
-            <br />
-            <asp:Label ID="Label7" runat="server" ForeColor="White" Text="Address          "></asp:Label>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:TextBox ID="addess" runat="server" Height="65px"></asp:TextBox>
             <br />
             <asp:Label ID="Label8" runat="server" ForeColor="White" Text="E-mail         "></asp:Label>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:TextBox ID="email" runat="server" Width="149px"></asp:TextBox>
+            <br />
+            <asp:Label ID="Label13" runat="server" ForeColor="White" Text="TelePhon"></asp:Label>
+            &nbsp;&nbsp;
+            <asp:TextBox ID="tele_b" runat="server"></asp:TextBox>
             <br />
             <asp:Button ID="Button2" runat="server" BackColor="#3366FF" BorderColor="#3399FF" ForeColor="White" Text="Register" OnClick="Button2_Click" />
             <br />

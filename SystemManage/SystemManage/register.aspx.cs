@@ -17,8 +17,8 @@ namespace SystemManage
         protected void Button2_Click(object sender, EventArgs e)
         {
             if ((username.Text != "") || (pass1.Text != "") || (pass2.Text != "") || (firstname.Text != "")
-                || (lastname.Text != "") || (position.Text != "") || (day.Text != "") ||(month.Text!="")
-                ||(year.Text!="")|| (addess.Text != "") || (email.Text != ""))
+                || (lastname.Text != "") || (day.Text != "") ||(month.Text!="")
+                ||(year.Text!="") || (email.Text != ""))
             {
                 if (pass1.Text == pass2.Text)
                 {
@@ -30,13 +30,14 @@ namespace SystemManage
                     user.Pass = pass1.Text;
                     user.FirstName = firstname.Text;
                     user.LastName = lastname.Text;
-                    user.Position = position.Text;
                     user.Sex = sex_drop.Text;
                     user.birthday = dt;
-                    user.Address = addess.Text;
                     user.email = email.Text;
-                    
-                    Response.Write(dt);
+                    user.Telephone = tele_b.Text;
+                    con.User_names.InsertOnSubmit(user);
+                    con.SubmitChanges();
+                    //Response.Write(dt);
+
                 }
                 else {
                     Label1.Text = "พาสเวิร์ดไม่ตรงกัน";

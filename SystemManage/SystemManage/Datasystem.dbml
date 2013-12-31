@@ -7,7 +7,8 @@
       <Column Name="Subrasks_Project" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="ID_User" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Association Name="Project_Manage" Member="Project" ThisKey="ID_Project,Subrasks_Project" OtherKey="ID_Project,Subrasks_Project" Type="Project" IsForeignKey="true" />
+      <Association Name="Project_Manage" Member="Project" ThisKey="ID_Project" OtherKey="ID_Project" Type="Project" IsForeignKey="true" />
+      <Association Name="Sub_Project_Manage" Member="Sub_Project" ThisKey="Subrasks_Project" OtherKey="Subrasks_Project" Type="Sub_Project" IsForeignKey="true" />
       <Association Name="User_name_Manage" Member="User_name" ThisKey="ID_User" OtherKey="ID_User" Type="User_name" IsForeignKey="true" />
     </Type>
   </Table>
@@ -17,29 +18,45 @@
       <Column Name="Dead_Line" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="Progress" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Last_Edit" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Association Name="Process_Project" Member="Projects" ThisKey="Name_Processes" OtherKey="Name_Processes" Type="Project" />
+      <Association Name="Process_Sub_Project" Member="Sub_Projects" ThisKey="Name_Processes" OtherKey="Name_Processes" Type="Sub_Project" />
     </Type>
   </Table>
   <Table Name="dbo.Project" Member="Projects">
     <Type Name="Project">
       <Column Name="ID_Project" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Name_Project" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Subrasks_Project" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Dead_Line" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="Comment" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="Comment_Bymanager" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="Issue" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="Name_Processes" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Association Name="Project_Manage" Member="Manages" ThisKey="ID_Project,Subrasks_Project" OtherKey="ID_Project,Subrasks_Project" Type="Manage" />
-      <Association Name="Process_Project" Member="Process" ThisKey="Name_Processes" OtherKey="Name_Processes" Type="Process" IsForeignKey="true" />
+      <Association Name="Project_Manage" Member="Manages" ThisKey="ID_Project" OtherKey="ID_Project" Type="Manage" />
+      <Association Name="Project_Skills_require" Member="Skills_requires" ThisKey="ID_Project" OtherKey="ID_Project" Type="Skills_require" />
+      <Association Name="Project_Sub_Project" Member="Sub_Projects" ThisKey="ID_Project" OtherKey="ID_Project" Type="Sub_Project" />
     </Type>
   </Table>
   <Table Name="dbo.Skills" Member="Skills">
     <Type Name="Skill">
-      <Column Name="ID_User" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID_User" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
       <Column Name="Name_Skills" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Experience" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="User_name_Skill" Member="User_name" ThisKey="ID_User" OtherKey="ID_User" Type="User_name" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Skills_require" Member="Skills_requires">
+    <Type Name="Skills_require">
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ID_Project" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Project_Skills_require" Member="Project" ThisKey="ID_Project" OtherKey="ID_Project" Type="Project" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Sub_Project" Member="Sub_Projects">
+    <Type Name="Sub_Project">
+      <Column Name="Subrasks_Project" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Dead_Line" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Comment_Bymanager" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Issue" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Name_Processes" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ID_Project" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Sub_Project_Manage" Member="Manages" ThisKey="Subrasks_Project" OtherKey="Subrasks_Project" Type="Manage" />
+      <Association Name="Process_Sub_Project" Member="Process" ThisKey="Name_Processes" OtherKey="Name_Processes" Type="Process" IsForeignKey="true" />
+      <Association Name="Project_Sub_Project" Member="Project" ThisKey="ID_Project" OtherKey="ID_Project" Type="Project" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.User_name" Member="User_names">
@@ -48,13 +65,12 @@
       <Column Name="Pass" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
       <Column Name="FirstName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="LastName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Position" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Sex" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="birthday" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="birthday" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="email" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Telephone" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
       <Association Name="User_name_Manage" Member="Manages" ThisKey="ID_User" OtherKey="ID_User" Type="Manage" />
-      <Association Name="User_name_Skill" Member="Skill" ThisKey="ID_User" OtherKey="ID_User" Type="Skill" Cardinality="One" />
+      <Association Name="User_name_Skill" Member="Skills" ThisKey="ID_User" OtherKey="ID_User" Type="Skill" />
     </Type>
   </Table>
 </Database>

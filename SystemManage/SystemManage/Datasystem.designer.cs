@@ -39,9 +39,9 @@ namespace SystemManage
     partial void InsertProject(Project instance);
     partial void UpdateProject(Project instance);
     partial void DeleteProject(Project instance);
-    partial void InsertSkill(Skill instance);
-    partial void UpdateSkill(Skill instance);
-    partial void DeleteSkill(Skill instance);
+    partial void InsertSub_Project(Sub_Project instance);
+    partial void UpdateSub_Project(Sub_Project instance);
+    partial void DeleteSub_Project(Sub_Project instance);
     partial void InsertUser_name(User_name instance);
     partial void UpdateUser_name(User_name instance);
     partial void DeleteUser_name(User_name instance);
@@ -109,6 +109,22 @@ namespace SystemManage
 			}
 		}
 		
+		public System.Data.Linq.Table<Skills_require> Skills_requires
+		{
+			get
+			{
+				return this.GetTable<Skills_require>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Sub_Project> Sub_Projects
+		{
+			get
+			{
+				return this.GetTable<Sub_Project>();
+			}
+		}
+		
 		public System.Data.Linq.Table<User_name> User_names
 		{
 			get
@@ -136,6 +152,8 @@ namespace SystemManage
 		
 		private EntityRef<Project> _Project;
 		
+		private EntityRef<Sub_Project> _Sub_Project;
+		
 		private EntityRef<User_name> _User_name;
 		
     #region Extensibility Method Definitions
@@ -157,6 +175,7 @@ namespace SystemManage
 		public Manage()
 		{
 			this._Project = default(EntityRef<Project>);
+			this._Sub_Project = default(EntityRef<Sub_Project>);
 			this._User_name = default(EntityRef<User_name>);
 			OnCreated();
 		}
@@ -216,7 +235,7 @@ namespace SystemManage
 			{
 				if ((this._Subrasks_Project != value))
 				{
-					if (this._Project.HasLoadedOrAssignedValue)
+					if (this._Sub_Project.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -273,7 +292,7 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Project_Manage", Storage="_Project", ThisKey="ID_Project,Subrasks_Project", OtherKey="ID_Project,Subrasks_Project", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Project_Manage", Storage="_Project", ThisKey="ID_Project", OtherKey="ID_Project", IsForeignKey=true)]
 		public Project Project
 		{
 			get
@@ -297,14 +316,46 @@ namespace SystemManage
 					{
 						value.Manages.Add(this);
 						this._ID_Project = value.ID_Project;
-						this._Subrasks_Project = value.Subrasks_Project;
 					}
 					else
 					{
 						this._ID_Project = default(string);
-						this._Subrasks_Project = default(string);
 					}
 					this.SendPropertyChanged("Project");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Sub_Project_Manage", Storage="_Sub_Project", ThisKey="Subrasks_Project", OtherKey="Subrasks_Project", IsForeignKey=true)]
+		public Sub_Project Sub_Project
+		{
+			get
+			{
+				return this._Sub_Project.Entity;
+			}
+			set
+			{
+				Sub_Project previousValue = this._Sub_Project.Entity;
+				if (((previousValue != value) 
+							|| (this._Sub_Project.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Sub_Project.Entity = null;
+						previousValue.Manages.Remove(this);
+					}
+					this._Sub_Project.Entity = value;
+					if ((value != null))
+					{
+						value.Manages.Add(this);
+						this._Subrasks_Project = value.Subrasks_Project;
+					}
+					else
+					{
+						this._Subrasks_Project = default(string);
+					}
+					this.SendPropertyChanged("Sub_Project");
 				}
 			}
 		}
@@ -378,7 +429,7 @@ namespace SystemManage
 		
 		private System.DateTime _Last_Edit;
 		
-		private EntitySet<Project> _Projects;
+		private EntitySet<Sub_Project> _Sub_Projects;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -396,7 +447,7 @@ namespace SystemManage
 		
 		public Process()
 		{
-			this._Projects = new EntitySet<Project>(new Action<Project>(this.attach_Projects), new Action<Project>(this.detach_Projects));
+			this._Sub_Projects = new EntitySet<Sub_Project>(new Action<Sub_Project>(this.attach_Sub_Projects), new Action<Sub_Project>(this.detach_Sub_Projects));
 			OnCreated();
 		}
 		
@@ -480,16 +531,16 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Process_Project", Storage="_Projects", ThisKey="Name_Processes", OtherKey="Name_Processes")]
-		public EntitySet<Project> Projects
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Process_Sub_Project", Storage="_Sub_Projects", ThisKey="Name_Processes", OtherKey="Name_Processes")]
+		public EntitySet<Sub_Project> Sub_Projects
 		{
 			get
 			{
-				return this._Projects;
+				return this._Sub_Projects;
 			}
 			set
 			{
-				this._Projects.Assign(value);
+				this._Sub_Projects.Assign(value);
 			}
 		}
 		
@@ -513,13 +564,13 @@ namespace SystemManage
 			}
 		}
 		
-		private void attach_Projects(Project entity)
+		private void attach_Sub_Projects(Sub_Project entity)
 		{
 			this.SendPropertyChanging();
 			entity.Process = this;
 		}
 		
-		private void detach_Projects(Project entity)
+		private void detach_Sub_Projects(Sub_Project entity)
 		{
 			this.SendPropertyChanging();
 			entity.Process = null;
@@ -536,21 +587,9 @@ namespace SystemManage
 		
 		private string _Name_Project;
 		
-		private string _Subrasks_Project;
-		
-		private System.Nullable<System.DateTime> _Dead_Line;
-		
-		private string _Comment;
-		
-		private string _Comment_Bymanager;
-		
-		private string _Issue;
-		
-		private string _Name_Processes;
-		
 		private EntitySet<Manage> _Manages;
 		
-		private EntityRef<Process> _Process;
+		private EntitySet<Sub_Project> _Sub_Projects;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -560,24 +599,12 @@ namespace SystemManage
     partial void OnID_ProjectChanged();
     partial void OnName_ProjectChanging(string value);
     partial void OnName_ProjectChanged();
-    partial void OnSubrasks_ProjectChanging(string value);
-    partial void OnSubrasks_ProjectChanged();
-    partial void OnDead_LineChanging(System.Nullable<System.DateTime> value);
-    partial void OnDead_LineChanged();
-    partial void OnCommentChanging(string value);
-    partial void OnCommentChanged();
-    partial void OnComment_BymanagerChanging(string value);
-    partial void OnComment_BymanagerChanged();
-    partial void OnIssueChanging(string value);
-    partial void OnIssueChanged();
-    partial void OnName_ProcessesChanging(string value);
-    partial void OnName_ProcessesChanged();
     #endregion
 		
 		public Project()
 		{
 			this._Manages = new EntitySet<Manage>(new Action<Manage>(this.attach_Manages), new Action<Manage>(this.detach_Manages));
-			this._Process = default(EntityRef<Process>);
+			this._Sub_Projects = new EntitySet<Sub_Project>(new Action<Sub_Project>(this.attach_Sub_Projects), new Action<Sub_Project>(this.detach_Sub_Projects));
 			OnCreated();
 		}
 		
@@ -621,6 +648,239 @@ namespace SystemManage
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Project_Manage", Storage="_Manages", ThisKey="ID_Project", OtherKey="ID_Project")]
+		public EntitySet<Manage> Manages
+		{
+			get
+			{
+				return this._Manages;
+			}
+			set
+			{
+				this._Manages.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Project_Sub_Project", Storage="_Sub_Projects", ThisKey="ID_Project", OtherKey="ID_Project")]
+		public EntitySet<Sub_Project> Sub_Projects
+		{
+			get
+			{
+				return this._Sub_Projects;
+			}
+			set
+			{
+				this._Sub_Projects.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Manages(Manage entity)
+		{
+			this.SendPropertyChanging();
+			entity.Project = this;
+		}
+		
+		private void detach_Manages(Manage entity)
+		{
+			this.SendPropertyChanging();
+			entity.Project = null;
+		}
+		
+		private void attach_Sub_Projects(Sub_Project entity)
+		{
+			this.SendPropertyChanging();
+			entity.Project = this;
+		}
+		
+		private void detach_Sub_Projects(Sub_Project entity)
+		{
+			this.SendPropertyChanging();
+			entity.Project = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Skills")]
+	public partial class Skill
+	{
+		
+		private string _ID_User;
+		
+		private string _Name_Skills;
+		
+		private int _Experience;
+		
+		public Skill()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_User", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string ID_User
+		{
+			get
+			{
+				return this._ID_User;
+			}
+			set
+			{
+				if ((this._ID_User != value))
+				{
+					this._ID_User = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name_Skills", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name_Skills
+		{
+			get
+			{
+				return this._Name_Skills;
+			}
+			set
+			{
+				if ((this._Name_Skills != value))
+				{
+					this._Name_Skills = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Experience", DbType="Int NOT NULL")]
+		public int Experience
+		{
+			get
+			{
+				return this._Experience;
+			}
+			set
+			{
+				if ((this._Experience != value))
+				{
+					this._Experience = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Skills_require")]
+	public partial class Skills_require
+	{
+		
+		private string _name;
+		
+		private string _ID_Project;
+		
+		public Skills_require()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this._name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Project", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string ID_Project
+		{
+			get
+			{
+				return this._ID_Project;
+			}
+			set
+			{
+				if ((this._ID_Project != value))
+				{
+					this._ID_Project = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Sub_Project")]
+	public partial class Sub_Project : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Subrasks_Project;
+		
+		private System.DateTime _Dead_Line;
+		
+		private string _Comment;
+		
+		private string _Comment_Bymanager;
+		
+		private string _Issue;
+		
+		private string _Name_Processes;
+		
+		private string _ID_Project;
+		
+		private EntitySet<Manage> _Manages;
+		
+		private EntityRef<Process> _Process;
+		
+		private EntityRef<Project> _Project;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSubrasks_ProjectChanging(string value);
+    partial void OnSubrasks_ProjectChanged();
+    partial void OnDead_LineChanging(System.DateTime value);
+    partial void OnDead_LineChanged();
+    partial void OnCommentChanging(string value);
+    partial void OnCommentChanged();
+    partial void OnComment_BymanagerChanging(string value);
+    partial void OnComment_BymanagerChanged();
+    partial void OnIssueChanging(string value);
+    partial void OnIssueChanged();
+    partial void OnName_ProcessesChanging(string value);
+    partial void OnName_ProcessesChanged();
+    partial void OnID_ProjectChanging(string value);
+    partial void OnID_ProjectChanged();
+    #endregion
+		
+		public Sub_Project()
+		{
+			this._Manages = new EntitySet<Manage>(new Action<Manage>(this.attach_Manages), new Action<Manage>(this.detach_Manages));
+			this._Process = default(EntityRef<Process>);
+			this._Project = default(EntityRef<Project>);
+			OnCreated();
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Subrasks_Project", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string Subrasks_Project
 		{
@@ -641,8 +901,8 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Dead_Line", DbType="Date")]
-		public System.Nullable<System.DateTime> Dead_Line
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Dead_Line", DbType="Date NOT NULL")]
+		public System.DateTime Dead_Line
 		{
 			get
 			{
@@ -745,7 +1005,31 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Project_Manage", Storage="_Manages", ThisKey="ID_Project,Subrasks_Project", OtherKey="ID_Project,Subrasks_Project")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Project", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string ID_Project
+		{
+			get
+			{
+				return this._ID_Project;
+			}
+			set
+			{
+				if ((this._ID_Project != value))
+				{
+					if (this._Project.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnID_ProjectChanging(value);
+					this.SendPropertyChanging();
+					this._ID_Project = value;
+					this.SendPropertyChanged("ID_Project");
+					this.OnID_ProjectChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Sub_Project_Manage", Storage="_Manages", ThisKey="Subrasks_Project", OtherKey="Subrasks_Project")]
 		public EntitySet<Manage> Manages
 		{
 			get
@@ -758,7 +1042,7 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Process_Project", Storage="_Process", ThisKey="Name_Processes", OtherKey="Name_Processes", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Process_Sub_Project", Storage="_Process", ThisKey="Name_Processes", OtherKey="Name_Processes", IsForeignKey=true)]
 		public Process Process
 		{
 			get
@@ -775,12 +1059,12 @@ namespace SystemManage
 					if ((previousValue != null))
 					{
 						this._Process.Entity = null;
-						previousValue.Projects.Remove(this);
+						previousValue.Sub_Projects.Remove(this);
 					}
 					this._Process.Entity = value;
 					if ((value != null))
 					{
-						value.Projects.Add(this);
+						value.Sub_Projects.Add(this);
 						this._Name_Processes = value.Name_Processes;
 					}
 					else
@@ -788,6 +1072,40 @@ namespace SystemManage
 						this._Name_Processes = default(string);
 					}
 					this.SendPropertyChanged("Process");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Project_Sub_Project", Storage="_Project", ThisKey="ID_Project", OtherKey="ID_Project", IsForeignKey=true)]
+		public Project Project
+		{
+			get
+			{
+				return this._Project.Entity;
+			}
+			set
+			{
+				Project previousValue = this._Project.Entity;
+				if (((previousValue != value) 
+							|| (this._Project.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Project.Entity = null;
+						previousValue.Sub_Projects.Remove(this);
+					}
+					this._Project.Entity = value;
+					if ((value != null))
+					{
+						value.Sub_Projects.Add(this);
+						this._ID_Project = value.ID_Project;
+					}
+					else
+					{
+						this._ID_Project = default(string);
+					}
+					this.SendPropertyChanged("Project");
 				}
 			}
 		}
@@ -815,164 +1133,13 @@ namespace SystemManage
 		private void attach_Manages(Manage entity)
 		{
 			this.SendPropertyChanging();
-			entity.Project = this;
+			entity.Sub_Project = this;
 		}
 		
 		private void detach_Manages(Manage entity)
 		{
 			this.SendPropertyChanging();
-			entity.Project = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Skills")]
-	public partial class Skill : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _ID_User;
-		
-		private string _Name_Skills;
-		
-		private int _Experience;
-		
-		private EntityRef<User_name> _User_name;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnID_UserChanging(string value);
-    partial void OnID_UserChanged();
-    partial void OnName_SkillsChanging(string value);
-    partial void OnName_SkillsChanged();
-    partial void OnExperienceChanging(int value);
-    partial void OnExperienceChanged();
-    #endregion
-		
-		public Skill()
-		{
-			this._User_name = default(EntityRef<User_name>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_User", DbType="VarChar(20) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string ID_User
-		{
-			get
-			{
-				return this._ID_User;
-			}
-			set
-			{
-				if ((this._ID_User != value))
-				{
-					if (this._User_name.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnID_UserChanging(value);
-					this.SendPropertyChanging();
-					this._ID_User = value;
-					this.SendPropertyChanged("ID_User");
-					this.OnID_UserChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name_Skills", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name_Skills
-		{
-			get
-			{
-				return this._Name_Skills;
-			}
-			set
-			{
-				if ((this._Name_Skills != value))
-				{
-					this.OnName_SkillsChanging(value);
-					this.SendPropertyChanging();
-					this._Name_Skills = value;
-					this.SendPropertyChanged("Name_Skills");
-					this.OnName_SkillsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Experience", DbType="Int NOT NULL")]
-		public int Experience
-		{
-			get
-			{
-				return this._Experience;
-			}
-			set
-			{
-				if ((this._Experience != value))
-				{
-					this.OnExperienceChanging(value);
-					this.SendPropertyChanging();
-					this._Experience = value;
-					this.SendPropertyChanged("Experience");
-					this.OnExperienceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_name_Skill", Storage="_User_name", ThisKey="ID_User", OtherKey="ID_User", IsForeignKey=true)]
-		public User_name User_name
-		{
-			get
-			{
-				return this._User_name.Entity;
-			}
-			set
-			{
-				User_name previousValue = this._User_name.Entity;
-				if (((previousValue != value) 
-							|| (this._User_name.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User_name.Entity = null;
-						previousValue.Skill = null;
-					}
-					this._User_name.Entity = value;
-					if ((value != null))
-					{
-						value.Skill = this;
-						this._ID_User = value.ID_User;
-					}
-					else
-					{
-						this._ID_User = default(string);
-					}
-					this.SendPropertyChanged("User_name");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
+			entity.Sub_Project = null;
 		}
 	}
 	
@@ -990,19 +1157,15 @@ namespace SystemManage
 		
 		private string _LastName;
 		
-		private string _Position;
-		
 		private string _Sex;
 		
-		private System.Nullable<System.DateTime> _birthday;
-		
-		private string _Address;
+		private System.DateTime _birthday;
 		
 		private string _email;
 		
-		private EntitySet<Manage> _Manages;
+		private string _Telephone;
 		
-		private EntityRef<Skill> _Skill;
+		private EntitySet<Manage> _Manages;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1016,22 +1179,19 @@ namespace SystemManage
     partial void OnFirstNameChanged();
     partial void OnLastNameChanging(string value);
     partial void OnLastNameChanged();
-    partial void OnPositionChanging(string value);
-    partial void OnPositionChanged();
     partial void OnSexChanging(string value);
     partial void OnSexChanged();
-    partial void OnbirthdayChanging(System.Nullable<System.DateTime> value);
+    partial void OnbirthdayChanging(System.DateTime value);
     partial void OnbirthdayChanged();
-    partial void OnAddressChanging(string value);
-    partial void OnAddressChanged();
     partial void OnemailChanging(string value);
     partial void OnemailChanged();
+    partial void OnTelephoneChanging(string value);
+    partial void OnTelephoneChanged();
     #endregion
 		
 		public User_name()
 		{
 			this._Manages = new EntitySet<Manage>(new Action<Manage>(this.attach_Manages), new Action<Manage>(this.detach_Manages));
-			this._Skill = default(EntityRef<Skill>);
 			OnCreated();
 		}
 		
@@ -1115,26 +1275,6 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Position", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Position
-		{
-			get
-			{
-				return this._Position;
-			}
-			set
-			{
-				if ((this._Position != value))
-				{
-					this.OnPositionChanging(value);
-					this.SendPropertyChanging();
-					this._Position = value;
-					this.SendPropertyChanged("Position");
-					this.OnPositionChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sex", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
 		public string Sex
 		{
@@ -1155,8 +1295,8 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_birthday", DbType="DateTime")]
-		public System.Nullable<System.DateTime> birthday
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_birthday", DbType="DateTime NOT NULL")]
+		public System.DateTime birthday
 		{
 			get
 			{
@@ -1171,26 +1311,6 @@ namespace SystemManage
 					this._birthday = value;
 					this.SendPropertyChanged("birthday");
 					this.OnbirthdayChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Address
-		{
-			get
-			{
-				return this._Address;
-			}
-			set
-			{
-				if ((this._Address != value))
-				{
-					this.OnAddressChanging(value);
-					this.SendPropertyChanging();
-					this._Address = value;
-					this.SendPropertyChanged("Address");
-					this.OnAddressChanged();
 				}
 			}
 		}
@@ -1215,6 +1335,26 @@ namespace SystemManage
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Telephone", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string Telephone
+		{
+			get
+			{
+				return this._Telephone;
+			}
+			set
+			{
+				if ((this._Telephone != value))
+				{
+					this.OnTelephoneChanging(value);
+					this.SendPropertyChanging();
+					this._Telephone = value;
+					this.SendPropertyChanged("Telephone");
+					this.OnTelephoneChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_name_Manage", Storage="_Manages", ThisKey="ID_User", OtherKey="ID_User")]
 		public EntitySet<Manage> Manages
 		{
@@ -1225,35 +1365,6 @@ namespace SystemManage
 			set
 			{
 				this._Manages.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_name_Skill", Storage="_Skill", ThisKey="ID_User", OtherKey="ID_User", IsUnique=true, IsForeignKey=false)]
-		public Skill Skill
-		{
-			get
-			{
-				return this._Skill.Entity;
-			}
-			set
-			{
-				Skill previousValue = this._Skill.Entity;
-				if (((previousValue != value) 
-							|| (this._Skill.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Skill.Entity = null;
-						previousValue.User_name = null;
-					}
-					this._Skill.Entity = value;
-					if ((value != null))
-					{
-						value.User_name = this;
-					}
-					this.SendPropertyChanged("Skill");
-				}
 			}
 		}
 		
