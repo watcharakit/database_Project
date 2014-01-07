@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Page_1.master.cs" Inherits="SystemManage.Page_1" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Page_1.Master.cs" Inherits="SystemManage.Page_1" %>
 
 <!DOCTYPE html>
 
@@ -16,19 +16,29 @@
                 <asp:Panel ID="longin_PN" runat="server">
                     <div style="width:60%;float:left;height:30px;text-align:left">
 
-                        <asp:HyperLink ID="HyperLink1" runat="server">Home</asp:HyperLink>
+                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Home.aspx">Home</asp:HyperLink>
 
                     </div>
                     <div style="width:39%;float:right">
                         <asp:Label ID="nameUser" runat="server" Text="name"></asp:Label>
-                        <asp:ImageButton ID="ImageButton1" runat="server" Height="30px" ImageUrl="/img/profile.jpg" Width="25px" />
-                        <asp:ImageButton ID="ImageButton2" runat="server" Height="30px" ImageUrl="/img/logout.jpg" Width="25px" />
+                        <asp:ImageButton ID="ImageButton2" runat="server" Height="30px" ImageUrl="/img/logout.jpg" Width="25px" OnClick="ImageButton2_Click" />
                     </div>
                 </asp:Panel>
                 
             </div>
-            <div style="width:100%">
+            <div>
+
+
+                <asp:Image ID="Image2" runat="server" ImageUrl="img\head.jpg" />
+
+
+            </div>
+            <div style="width:99%; height: 378px;">
                 <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    <div>
+                        <asp:Panel ID="Panel1" runat="server" Height="138px" Width="948px">
+                        </asp:Panel>
+                    </div>
                 </asp:ContentPlaceHolder>
             </div>
             

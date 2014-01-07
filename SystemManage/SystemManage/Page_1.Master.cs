@@ -23,6 +23,12 @@ namespace SystemManage
             cmd.ExecuteNonQuery();
             string actresult = ((string)cmd.ExecuteScalar());
             nameUser.Text = actresult.ToString();
+            Application["firstname"] = actresult.ToString();
+        }
+
+        protected void ImageButton2_Click(object sender, ImageClickEventArgs e)
+        {
+            Response.Redirect("index.aspx");
         }
     }
 }

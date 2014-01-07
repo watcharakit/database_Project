@@ -101,22 +101,6 @@ namespace SystemManage
 			}
 		}
 		
-		public System.Data.Linq.Table<Skill> Skills
-		{
-			get
-			{
-				return this.GetTable<Skill>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Skills_require> Skills_requires
-		{
-			get
-			{
-				return this.GetTable<Skills_require>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Sub_Project> Sub_Projects
 		{
 			get
@@ -140,19 +124,15 @@ namespace SystemManage
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private string _ID_Mange;
-		
 		private string _ID_Project;
-		
-		private string _Subrasks_Project;
 		
 		private string _ID_User;
 		
 		private string _Status;
 		
-		private EntityRef<Project> _Project;
+		private long _ID;
 		
-		private EntityRef<Sub_Project> _Sub_Project;
+		private EntityRef<Project> _Project;
 		
 		private EntityRef<User_name> _User_name;
 		
@@ -160,47 +140,24 @@ namespace SystemManage
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnID_MangeChanging(string value);
-    partial void OnID_MangeChanged();
     partial void OnID_ProjectChanging(string value);
     partial void OnID_ProjectChanged();
-    partial void OnSubrasks_ProjectChanging(string value);
-    partial void OnSubrasks_ProjectChanged();
     partial void OnID_UserChanging(string value);
     partial void OnID_UserChanged();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
+    partial void OnIDChanging(long value);
+    partial void OnIDChanged();
     #endregion
 		
 		public Manage()
 		{
 			this._Project = default(EntityRef<Project>);
-			this._Sub_Project = default(EntityRef<Sub_Project>);
 			this._User_name = default(EntityRef<User_name>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Mange", DbType="VarChar(20) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string ID_Mange
-		{
-			get
-			{
-				return this._ID_Mange;
-			}
-			set
-			{
-				if ((this._ID_Mange != value))
-				{
-					this.OnID_MangeChanging(value);
-					this.SendPropertyChanging();
-					this._ID_Mange = value;
-					this.SendPropertyChanged("ID_Mange");
-					this.OnID_MangeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Project", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Project", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
 		public string ID_Project
 		{
 			get
@@ -220,30 +177,6 @@ namespace SystemManage
 					this._ID_Project = value;
 					this.SendPropertyChanged("ID_Project");
 					this.OnID_ProjectChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Subrasks_Project", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Subrasks_Project
-		{
-			get
-			{
-				return this._Subrasks_Project;
-			}
-			set
-			{
-				if ((this._Subrasks_Project != value))
-				{
-					if (this._Sub_Project.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSubrasks_ProjectChanging(value);
-					this.SendPropertyChanging();
-					this._Subrasks_Project = value;
-					this.SendPropertyChanged("Subrasks_Project");
-					this.OnSubrasks_ProjectChanged();
 				}
 			}
 		}
@@ -292,6 +225,26 @@ namespace SystemManage
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public long ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Project_Manage", Storage="_Project", ThisKey="ID_Project", OtherKey="ID_Project", IsForeignKey=true)]
 		public Project Project
 		{
@@ -322,40 +275,6 @@ namespace SystemManage
 						this._ID_Project = default(string);
 					}
 					this.SendPropertyChanged("Project");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Sub_Project_Manage", Storage="_Sub_Project", ThisKey="Subrasks_Project", OtherKey="Subrasks_Project", IsForeignKey=true)]
-		public Sub_Project Sub_Project
-		{
-			get
-			{
-				return this._Sub_Project.Entity;
-			}
-			set
-			{
-				Sub_Project previousValue = this._Sub_Project.Entity;
-				if (((previousValue != value) 
-							|| (this._Sub_Project.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Sub_Project.Entity = null;
-						previousValue.Manages.Remove(this);
-					}
-					this._Sub_Project.Entity = value;
-					if ((value != null))
-					{
-						value.Manages.Add(this);
-						this._Subrasks_Project = value.Subrasks_Project;
-					}
-					else
-					{
-						this._Subrasks_Project = default(string);
-					}
-					this.SendPropertyChanged("Sub_Project");
 				}
 			}
 		}
@@ -423,12 +342,6 @@ namespace SystemManage
 		
 		private string _Name_Processes;
 		
-		private System.DateTime _Dead_Line;
-		
-		private int _Progress;
-		
-		private System.DateTime _Last_Edit;
-		
 		private EntitySet<Sub_Project> _Sub_Projects;
 		
     #region Extensibility Method Definitions
@@ -437,12 +350,6 @@ namespace SystemManage
     partial void OnCreated();
     partial void OnName_ProcessesChanging(string value);
     partial void OnName_ProcessesChanged();
-    partial void OnDead_LineChanging(System.DateTime value);
-    partial void OnDead_LineChanged();
-    partial void OnProgressChanging(int value);
-    partial void OnProgressChanged();
-    partial void OnLast_EditChanging(System.DateTime value);
-    partial void OnLast_EditChanged();
     #endregion
 		
 		public Process()
@@ -467,66 +374,6 @@ namespace SystemManage
 					this._Name_Processes = value;
 					this.SendPropertyChanged("Name_Processes");
 					this.OnName_ProcessesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Dead_Line", DbType="Date NOT NULL")]
-		public System.DateTime Dead_Line
-		{
-			get
-			{
-				return this._Dead_Line;
-			}
-			set
-			{
-				if ((this._Dead_Line != value))
-				{
-					this.OnDead_LineChanging(value);
-					this.SendPropertyChanging();
-					this._Dead_Line = value;
-					this.SendPropertyChanged("Dead_Line");
-					this.OnDead_LineChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Progress", DbType="Int NOT NULL")]
-		public int Progress
-		{
-			get
-			{
-				return this._Progress;
-			}
-			set
-			{
-				if ((this._Progress != value))
-				{
-					this.OnProgressChanging(value);
-					this.SendPropertyChanging();
-					this._Progress = value;
-					this.SendPropertyChanged("Progress");
-					this.OnProgressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Last_Edit", DbType="Date NOT NULL")]
-		public System.DateTime Last_Edit
-		{
-			get
-			{
-				return this._Last_Edit;
-			}
-			set
-			{
-				if ((this._Last_Edit != value))
-				{
-					this.OnLast_EditChanging(value);
-					this.SendPropertyChanging();
-					this._Last_Edit = value;
-					this.SendPropertyChanged("Last_Edit");
-					this.OnLast_EditChanged();
 				}
 			}
 		}
@@ -608,7 +455,7 @@ namespace SystemManage
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Project", DbType="VarChar(20) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Project", DbType="VarChar(100) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string ID_Project
 		{
 			get
@@ -719,114 +566,6 @@ namespace SystemManage
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Skills")]
-	public partial class Skill
-	{
-		
-		private string _ID_User;
-		
-		private string _Name_Skills;
-		
-		private int _Experience;
-		
-		public Skill()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_User", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string ID_User
-		{
-			get
-			{
-				return this._ID_User;
-			}
-			set
-			{
-				if ((this._ID_User != value))
-				{
-					this._ID_User = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name_Skills", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name_Skills
-		{
-			get
-			{
-				return this._Name_Skills;
-			}
-			set
-			{
-				if ((this._Name_Skills != value))
-				{
-					this._Name_Skills = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Experience", DbType="Int NOT NULL")]
-		public int Experience
-		{
-			get
-			{
-				return this._Experience;
-			}
-			set
-			{
-				if ((this._Experience != value))
-				{
-					this._Experience = value;
-				}
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Skills_require")]
-	public partial class Skills_require
-	{
-		
-		private string _name;
-		
-		private string _ID_Project;
-		
-		public Skills_require()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string name
-		{
-			get
-			{
-				return this._name;
-			}
-			set
-			{
-				if ((this._name != value))
-				{
-					this._name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Project", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string ID_Project
-		{
-			get
-			{
-				return this._ID_Project;
-			}
-			set
-			{
-				if ((this._ID_Project != value))
-				{
-					this._ID_Project = value;
-				}
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Sub_Project")]
 	public partial class Sub_Project : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -847,7 +586,9 @@ namespace SystemManage
 		
 		private string _ID_Project;
 		
-		private EntitySet<Manage> _Manages;
+		private string _username;
+		
+		private string _progress;
 		
 		private EntityRef<Process> _Process;
 		
@@ -871,11 +612,14 @@ namespace SystemManage
     partial void OnName_ProcessesChanged();
     partial void OnID_ProjectChanging(string value);
     partial void OnID_ProjectChanged();
+    partial void OnusernameChanging(string value);
+    partial void OnusernameChanged();
+    partial void OnprogressChanging(string value);
+    partial void OnprogressChanged();
     #endregion
 		
 		public Sub_Project()
 		{
-			this._Manages = new EntitySet<Manage>(new Action<Manage>(this.attach_Manages), new Action<Manage>(this.detach_Manages));
 			this._Process = default(EntityRef<Process>);
 			this._Project = default(EntityRef<Project>);
 			OnCreated();
@@ -981,7 +725,7 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name_Processes", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name_Processes", DbType="VarChar(100)")]
 		public string Name_Processes
 		{
 			get
@@ -1005,7 +749,7 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Project", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_Project", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
 		public string ID_Project
 		{
 			get
@@ -1029,16 +773,43 @@ namespace SystemManage
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Sub_Project_Manage", Storage="_Manages", ThisKey="Subrasks_Project", OtherKey="Subrasks_Project")]
-		public EntitySet<Manage> Manages
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_username", DbType="VarChar(50)")]
+		public string username
 		{
 			get
 			{
-				return this._Manages;
+				return this._username;
 			}
 			set
 			{
-				this._Manages.Assign(value);
+				if ((this._username != value))
+				{
+					this.OnusernameChanging(value);
+					this.SendPropertyChanging();
+					this._username = value;
+					this.SendPropertyChanged("username");
+					this.OnusernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_progress", DbType="VarChar(50)")]
+		public string progress
+		{
+			get
+			{
+				return this._progress;
+			}
+			set
+			{
+				if ((this._progress != value))
+				{
+					this.OnprogressChanging(value);
+					this.SendPropertyChanging();
+					this._progress = value;
+					this.SendPropertyChanged("progress");
+					this.OnprogressChanged();
+				}
 			}
 		}
 		
@@ -1128,18 +899,6 @@ namespace SystemManage
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_Manages(Manage entity)
-		{
-			this.SendPropertyChanging();
-			entity.Sub_Project = this;
-		}
-		
-		private void detach_Manages(Manage entity)
-		{
-			this.SendPropertyChanging();
-			entity.Sub_Project = null;
 		}
 	}
 	

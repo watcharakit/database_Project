@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Register</title>
 </head>
 <center>
 <body style="background-color:#99CCFF">
@@ -58,6 +58,7 @@
             <asp:TextBox ID="tele_b" runat="server"></asp:TextBox>
             <br />
             <asp:Button ID="Button2" runat="server" BackColor="#3366FF" BorderColor="#3399FF" ForeColor="White" Text="Register" OnClick="Button2_Click" />
+            <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Cancel" />
             <br />
             <br />
         </asp:Panel>

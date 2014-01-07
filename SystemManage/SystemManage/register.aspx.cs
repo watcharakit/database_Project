@@ -16,9 +16,9 @@ namespace SystemManage
 
         protected void Button2_Click(object sender, EventArgs e)
         {
-            if ((username.Text != "") || (pass1.Text != "") || (pass2.Text != "") || (firstname.Text != "")
-                || (lastname.Text != "") || (day.Text != "") ||(month.Text!="")
-                ||(year.Text!="") || (email.Text != ""))
+            if ((username.Text != "") && (pass1.Text != "") && (pass2.Text != "") && (firstname.Text != "")
+                && (lastname.Text != "") && (day.Text != "") && (month.Text!="")
+                && (year.Text!="") && (email.Text != ""))
             {
                 if (pass1.Text == pass2.Text)
                 {
@@ -37,6 +37,7 @@ namespace SystemManage
                     con.User_names.InsertOnSubmit(user);
                     con.SubmitChanges();
                     //Response.Write(dt);
+                    Response.Redirect("index.aspx");
 
                 }
                 else {
@@ -46,6 +47,11 @@ namespace SystemManage
             else {
                 Label1.Text = "กรอกข้อมูลไม่ครบ";
             }
+        }
+
+        protected void Button3_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("index.aspx");
         }
     }
 }
